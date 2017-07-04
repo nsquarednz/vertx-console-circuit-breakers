@@ -50,7 +50,7 @@ export default {
             this.eb.registerHandler(values[0].address, (e, m) => {
                 const breaker = m.body;
                 breaker.lastUpdated = Date.now();
-                if (breaker.state === 'CLOSED') {
+                if (breaker.state === 'OPEN') {
                     breaker.stateLevel = 0;
                 } else if (breaker.state === 'HALF_OPEN') {
                     breaker.stateLevel = 1;
