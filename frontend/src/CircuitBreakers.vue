@@ -25,6 +25,7 @@ export default {
         Promise.all([getAddress, openEventBus]).then(values => {
             this.eb.registerHandler(values[0].address, (e, m) => {
                 const breaker = m.body;
+                breaker.lastUpdated = Date.now();
                 this.$set(this.breakers, breaker.name, breaker);
             });
         });
