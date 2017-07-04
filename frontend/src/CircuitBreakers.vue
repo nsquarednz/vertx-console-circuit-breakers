@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-for="(breaker, name) in breakers" :key="name">{{ breaker }}</div>
+        <div v-for="breaker in sortedBreakers" :key="breaker.name">{{ breaker.name }} : {{ breaker.stateLevel }}</div>
     </div>
 </template>
 
@@ -12,6 +12,30 @@ export default {
     data() {
         return {
             breakers: {}
+        }
+    },
+    computed: {
+        sortedBreakers() {
+            const sorted = Object.keys(this.breakers)
+                .map(k => this.breakers[k])
+                .sort((a, b) => {
+                    const aLevel = a.stateLevel;
+                    const bLevel = b.stateLevel;
+                    if (aLevel === bLevel) {
+                        const aName = a.name.toUpperCase();
+                        const bName = b.name.toUpperCase();
+                        if (aName < bName) {
+                            return -1;
+                        } else if (aName > bName) {
+                            return 1;
+                        } else {
+                            return 0;
+                        }
+                    } else {
+                        return aLevel - bLevel;
+                    }
+                });
+            return sorted;
         }
     },
     beforeMount() {
@@ -26,6 +50,13 @@ export default {
             this.eb.registerHandler(values[0].address, (e, m) => {
                 const breaker = m.body;
                 breaker.lastUpdated = Date.now();
+                if (breaker.state === 'CLOSED') {
+                    breaker.stateLevel = 0;
+                } else if (breaker.state === 'HALF_OPEN') {
+                    breaker.stateLevel = 1;
+                } else {
+                    breaker.stateLevel = 2;
+                }
                 this.$set(this.breakers, breaker.name, breaker);
             });
         });
