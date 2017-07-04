@@ -1,14 +1,47 @@
+<style lang="scss" scoped>
+.pf-card-grid {
+    padding: 20px 30px 5px;
+}
+
+.breaker-list-enter-active,
+.breaker-list-leave-active {
+    transition: all 0.5s;
+    &>.card {
+        opacity: 0;
+        transform: scale(0.25, 0.25);
+    }
+}
+
+.breaker-list-leave-active {
+    position: absolute;
+    z-index: -1;
+    &>.card {
+        transition: all 0.3s;
+    }
+}
+
+.breaker-list-move {
+    transition: transform 0.3s ease-in-out;
+}
+</style>
+
 <template>
-    <div>
-        <div v-for="breaker in sortedBreakers" :key="breaker.name">{{ breaker.name }} : {{ breaker.stateLevel }}</div>
+    <div class="container-fluid pf-card-grid">
+        <transition-group name="breaker-list" tag="div" class="row">
+            <breaker-card v-for="breaker in sortedBreakers" :key="breaker.name" :breaker="breaker"></breaker-card>
+        </transition-group>
     </div>
 </template>
 
 <script>
 import EventBus from 'vertx3-eventbus-client';
+import BreakerCard from './BreakerCard.vue';
 
 export default {
     name: 'Circuit Breakers',
+    components: {
+        'breaker-card': BreakerCard
+    },
     data() {
         return {
             breakers: {}

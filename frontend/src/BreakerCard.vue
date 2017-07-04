@@ -1,0 +1,24 @@
+<template>
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+        <div class="card-pf card-pf-view card-pf-view-select card-pf-view-single-select breaker-card">
+            <div class="card-pf-body">
+                <h2 class="card-pf-title">{{ breaker.name }}</h2>
+                {{ breaker.state }}
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+export default {
+    props: {
+        breaker: Object
+    }
+}
+</script>
+
+<style lang="scss" scoped>
+.breaker-card .card-pf-body {
+    height: 150px;
+}
+</style>
