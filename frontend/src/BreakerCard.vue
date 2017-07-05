@@ -8,7 +8,7 @@
                         <div class="breaker-state">{{ breaker.state.replace('_', ' ') }}</div>
                     </div>
                     <div class="data-row">
-                        <span>{{ breaker.operationRate }} ops/sec</span>
+                        <span>{{ abbreviate(breaker.operationRate, 1) }} ops/sec</span>
                         <span style="float: right">
                             <b>{{ breaker.rollingErrorPercentage }}% rate</b>
                             <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
@@ -25,8 +25,59 @@
                 <div class="rate-chart" :class="{ 'below-overlay': displayOverlay}">
                     <pf-sparkline :tooltipContents="tooltipContents" :maxDisplayed="20" :data="operationRate" :extraChartOptions="extraChartOptions"></pf-sparkline>
                 </div>
-                <div class="toggle-overlay" :class="{ shown: displayOverlay }" @mouseout="displayOverlay = false" @click="onClick">
-                    Toggle Display
+                <div class="toggle-overlay" :class="{ shown: displayOverlay }" @mouseleave="displayOverlay = false" @click="onClick">
+                    <div class="data-row">
+                        <h2 class="card-pf-title breaker-name">{{ breaker.name }}</h2>
+                        <div class="breaker-state">LAST {{ prettyMs(breaker.metricRollingWindow).toUpperCase() }}</div>
+                    </div>
+                    <table class="details-table" style="display: inline-block;">
+                        <tbody>
+                            <tr>
+                                <td>Successes</td>
+                                <td>{{ abbreviate(breaker.rollingSuccessCount, 1) }}</td>
+                            </tr>
+                            <tr>
+                                <td>Failures</td>
+                                <td>{{ abbreviate(breaker.rollingFailureCount, 1) }}</td>
+                            </tr>
+                            <tr>
+                                <td>Exceptions</td>
+                                <td>{{ abbreviate(breaker.rollingExceptionCount, 1) }}</td>
+                            </tr>
+                            <tr>
+                                <td>Timeouts</td>
+                                <td>{{ abbreviate(breaker.rollingTimeoutCount, 1) }}</td>
+                            </tr>
+                            <tr>
+                                <td>Rejections</td>
+                                <td>{{ abbreviate(breaker.rollingShortCircuitedCount, 1) }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="details-table" style="float: right">
+                        <tbody>
+                            <tr>
+                                <td>Med Latency</td>
+                                <td>{{ prettyMs(breaker.rollingLatency['50']) }}</td>
+                            </tr>
+                            <tr>
+                                <td>Max Latency</td>
+                                <td>{{ prettyMs(breaker.rollingLatency['100']) }}</td>
+                            </tr>
+                            <tr>
+                                <td>90% Latency</td>
+                                <td>{{ prettyMs(breaker.rollingLatency['90']) }}</td>
+                            </tr>
+                            <tr>
+                                <td>95% Latency</td>
+                                <td>{{ prettyMs(breaker.rollingLatency['95']) }}</td>
+                            </tr>
+                            <tr>
+                                <td>99% Latency</td>
+                                <td>{{ prettyMs(breaker.rollingLatency['99']) }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -63,6 +114,7 @@ export default {
     },
     computed: {
         operationRate() {
+            console.log(JSON.stringify(this.breaker));
             return { indices: [new Date()], values: [this.breaker.operationRate] };
         },
         statusCardClass() {
@@ -112,7 +164,6 @@ $card-height: 150px;
 .breaker-state {
     float: right;
     font-weight: bold;
-    margin-left: $card-margin;
 }
 
 .breaker-name,
@@ -151,8 +202,8 @@ $card-height: 150px;
 }
 
 .below-overlay {
-    opacity: 0.5;
-    filter: blur(2px);
+    opacity: 0.4;
+    filter: blur(3px);
 }
 
 .toggle-overlay {
@@ -160,18 +211,25 @@ $card-height: 150px;
     width: 100%;
     height: 100%;
     pointer-events: none;
-    text-align: center;
-    vertical-align: middle;
-    line-height: $card-height;
-    font-size: 18px;
-    font-weight: bold;
     opacity: 0;
     transition: all 0.2s;
+    padding: $card-margin;
     &.shown {
-        font-size: 16px;
         opacity: 1;
         pointer-events: auto;
-        background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    .data-row {
+        padding: 0;
+    }
+}
+
+.details-table {
+    margin-top: 2px;
+
+    td:first-child {
+        font-weight: bold;
+        padding-right: 5px;
     }
 }
 </style>
