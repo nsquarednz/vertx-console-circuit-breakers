@@ -7,7 +7,17 @@
                 <div class="breaker-info">
                     <div class="breaker-data">
                         <span>{{ breaker.operationRate }} ops/sec</span>
-                        <span style="float: right"><b>{{ breaker.rollingErrorPercentage }}%</b> <i class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
+                        <span style="float: right">
+                            <b>{{ breaker.rollingErrorPercentage }}%</b>
+                            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <div class="breaker-data">
+                        <span>{{ abbreviate(breaker.rollingOperationCount, 1) }} in last {{ prettyMs(breaker.metricRollingWindow) }}</span>
+                        <span style="float: right">
+                            <b>{{ prettyMs(breaker.rollingLatencyMean) }} avg</b>
+                            <i class="fa fa-clock-o" aria-hidden="true"></i>
+                        </span>
                     </div>
                     <div class="rate-chart">
                         <pf-sparkline :tooltipContents="tooltipContents" :maxDisplayed="20" :data="operationRate" :extraChartOptions="extraChartOptions"></pf-sparkline>
@@ -20,18 +30,21 @@
 
 <script>
 import abbreviate from 'number-abbreviate';
+import prettyMs from 'pretty-ms';
 
 export default {
     props: {
         breaker: Object
     },
     created() {
-        this.tooltipContents = { contents: d => '<span class="c3-tooltip-sparkline">' + abbreviate(d[0].value, 1) + ' Ops/sec</span>' }
+        this.tooltipContents = { contents: d => '<span class="c3-tooltip-sparkline">' + abbreviate(d[0].value, 1) + ' Ops/sec</span>' };
         this.extraChartOptions = {
             color: {
                 pattern: ['#fff']
             }
-        }
+        };
+        this.abbreviate = abbreviate;
+        this.prettyMs = prettyMs;
     },
     computed: {
         operationRate() {
