@@ -2,7 +2,7 @@
     <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
         <div class="card-pf card-pf-view card-pf-view-select card-pf-view-single-select breaker-card" :class="statusCardClass">
             <div class="card-pf-body">
-                <div class="breaker-data">
+                <div class="breaker-data" @mouseover="displayOverlay = true" :class="{ 'below-overlay': displayOverlay}">
                     <div class="data-row">
                         <h2 class="card-pf-title breaker-name">{{ breaker.name }}</h2>
                         <div class="breaker-state">{{ breaker.state.replace('_', ' ') }}</div>
@@ -22,8 +22,11 @@
                         </span>
                     </div>
                 </div>
-                <div class="rate-chart">
+                <div class="rate-chart" :class="{ 'below-overlay': displayOverlay}">
                     <pf-sparkline :tooltipContents="tooltipContents" :maxDisplayed="20" :data="operationRate" :extraChartOptions="extraChartOptions"></pf-sparkline>
+                </div>
+                <div class="toggle-overlay" :class="{ shown: displayOverlay }" @mouseout="displayOverlay = false" @click="onClick">
+                    Toggle Display
                 </div>
             </div>
         </div>
@@ -38,6 +41,11 @@ export default {
     props: {
         breaker: Object
     },
+    data() {
+        return {
+            displayOverlay: false
+        }
+    },
     created() {
         this.tooltipContents = { contents: d => '<span class="c3-tooltip-sparkline">' + abbreviate(d[0].value, 1) + ' ops/sec</span>' };
         this.extraChartOptions = {
@@ -47,6 +55,11 @@ export default {
         };
         this.abbreviate = abbreviate;
         this.prettyMs = prettyMs;
+    },
+    methods: {
+        onClick() {
+            console.log('clicked')
+        }
     },
     computed: {
         operationRate() {
@@ -122,10 +135,6 @@ $card-height: 150px;
 .breaker-data {
     padding-top: $card-margin;
     flex-grow: 1;
-
-    &:hover {
-        background: purple;
-    }
 }
 
 .data-row {
@@ -133,6 +142,36 @@ $card-height: 150px;
 }
 
 .rate-chart {
-    margin-bottom: -2px;
+    margin-bottom: -3px;
+}
+
+.breaker-data,
+.rate-chart {
+    transition: filter 0.2s;
+}
+
+.below-overlay {
+    opacity: 0.5;
+    filter: blur(2px);
+}
+
+.toggle-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    text-align: center;
+    vertical-align: middle;
+    line-height: $card-height;
+    font-size: 18px;
+    font-weight: bold;
+    opacity: 0;
+    transition: all 0.2s;
+    &.shown {
+        font-size: 16px;
+        opacity: 1;
+        pointer-events: auto;
+        background-color: rgba(0, 0, 0, 0.05);
+    }
 }
 </style>
