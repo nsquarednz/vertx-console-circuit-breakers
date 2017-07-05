@@ -5,6 +5,10 @@
                 <h2 class="card-pf-title breaker-name">{{ breaker.name }}</h2>
                 <div class="breaker-state">{{ breaker.state.replace('_', ' ') }}</div>
                 <div class="breaker-info">
+                    <div class="breaker-data">
+                        <span>{{ breaker.operationRate }} ops/sec</span>
+                        <span style="float: right"><b>{{ breaker.rollingErrorPercentage }}%</b> <i class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
+                    </div>
                     <div class="rate-chart">
                         <pf-sparkline :tooltipContents="tooltipContents" :maxDisplayed="20" :data="operationRate" :extraChartOptions="extraChartOptions"></pf-sparkline>
                     </div>
@@ -99,7 +103,11 @@ $card-height: 150px;
     -ms-flex-direction: column;
     flex-direction: column;
     height: $card-height - $card-margin - 8px;
-    background-image: linear-gradient(transparent, rgba(255,255,255,0.125));
+    background-image: linear-gradient(transparent, rgba(255, 255, 255, 0.125));
+}
+
+.breaker-data {
+    padding: 0 $card-margin;
 }
 
 .rate-chart {
