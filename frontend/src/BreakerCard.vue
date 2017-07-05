@@ -133,6 +133,6 @@ $card-height: 150px;
 }
 
 .rate-chart {
-    margin-bottom: -$card-margin / 2;
+    margin-bottom: -2px;
 }
 </style>
