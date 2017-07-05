@@ -57,23 +57,23 @@
                     <table class="details-table" style="float: right">
                         <tbody>
                             <tr>
-                                <td>Med Latency</td>
+                                <td>Median</td>
                                 <td>{{ prettyMs(breaker.rollingLatency['50']) }}</td>
                             </tr>
                             <tr>
-                                <td>Max Latency</td>
+                                <td>Max</td>
                                 <td>{{ prettyMs(breaker.rollingLatency['100']) }}</td>
                             </tr>
                             <tr>
-                                <td>90% Latency</td>
+                                <td>90th</td>
                                 <td>{{ prettyMs(breaker.rollingLatency['90']) }}</td>
                             </tr>
                             <tr>
-                                <td>95% Latency</td>
+                                <td>95th</td>
                                 <td>{{ prettyMs(breaker.rollingLatency['95']) }}</td>
                             </tr>
                             <tr>
-                                <td>99% Latency</td>
+                                <td>99th</td>
                                 <td>{{ prettyMs(breaker.rollingLatency['99']) }}</td>
                             </tr>
                         </tbody>
@@ -229,7 +229,12 @@ $card-height: 150px;
 
     td:first-child {
         font-weight: bold;
-        padding-right: 5px;
+        padding-right: 6px;
+        border-right: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    td:last-child {
+        padding-left: 6px;
     }
 }
 </style>
