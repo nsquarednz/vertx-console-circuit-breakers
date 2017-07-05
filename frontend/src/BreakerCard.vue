@@ -2,26 +2,26 @@
     <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
         <div class="card-pf card-pf-view card-pf-view-select card-pf-view-single-select breaker-card" :class="statusCardClass">
             <div class="card-pf-body">
-                <h2 class="card-pf-title breaker-name">{{ breaker.name }}</h2>
-                <div class="breaker-state">{{ breaker.state.replace('_', ' ') }}</div>
-                <div class="breaker-info">
-                    <div class="breaker-data">
-                        <span>{{ breaker.operationRate }} ops/sec</span>
-                        <span style="float: right">
-                            <b>{{ breaker.rollingErrorPercentage }}% rate</b>
-                            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                        </span>
-                    </div>
-                    <div class="breaker-data">
-                        <span>{{ abbreviate(breaker.rollingOperationCount, 1) }} in last {{ prettyMs(breaker.metricRollingWindow) }}</span>
-                        <span style="float: right">
-                            <b>{{ prettyMs(breaker.rollingLatencyMean) }} avg</b>
-                            <i class="fa fa-clock-o" aria-hidden="true"></i>    
-                        </span>
-                    </div>
-                    <div class="rate-chart">
-                        <pf-sparkline :tooltipContents="tooltipContents" :maxDisplayed="20" :data="operationRate" :extraChartOptions="extraChartOptions"></pf-sparkline>
-                    </div>
+                <div class="data-row">
+                    <h2 class="card-pf-title breaker-name">{{ breaker.name }}</h2>
+                    <div class="breaker-state">{{ breaker.state.replace('_', ' ') }}</div>
+                </div>
+                <div class="data-row">
+                    <span>{{ breaker.operationRate }} ops/sec</span>
+                    <span style="float: right">
+                        <b>{{ breaker.rollingErrorPercentage }}% rate</b>
+                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <div class="data-row">
+                    <span>{{ abbreviate(breaker.rollingOperationCount, 1) }} in last {{ prettyMs(breaker.metricRollingWindow) }}</span>
+                    <span style="float: right">
+                        <b>{{ prettyMs(breaker.rollingLatencyMean) }} avg</b>
+                        <i class="fa fa-clock-o" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <div class="rate-chart">
+                    <pf-sparkline :tooltipContents="tooltipContents" :maxDisplayed="20" :data="operationRate" :extraChartOptions="extraChartOptions"></pf-sparkline>
                 </div>
             </div>
         </div>
@@ -37,7 +37,7 @@ export default {
         breaker: Object
     },
     created() {
-        this.tooltipContents = { contents: d => '<span class="c3-tooltip-sparkline">' + abbreviate(d[0].value, 1) + ' Ops/sec</span>' };
+        this.tooltipContents = { contents: d => '<span class="c3-tooltip-sparkline">' + abbreviate(d[0].value, 1) + ' ops/sec</span>' };
         this.extraChartOptions = {
             color: {
                 pattern: ['#fff']
@@ -92,14 +92,13 @@ $card-height: 150px;
 
 .breaker-name {
     font-size: 16px;
-    margin-top: 0;
-    margin-left: $card-margin;
+    margin: 0;
 }
 
 .breaker-state {
     float: right;
     font-weight: bold;
-    margin: 0 $card-margin;
+    margin-left: $card-margin;
 }
 
 .breaker-name,
@@ -107,7 +106,7 @@ $card-height: 150px;
     display: inline-block;
 }
 
-.breaker-info {
+.breaker-card .card-pf-body {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -115,15 +114,16 @@ $card-height: 150px;
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
     flex-direction: column;
-    height: $card-height - $card-margin - 8px;
+    height: $card-height - $card-margin;
     background-image: linear-gradient(transparent, rgba(255, 255, 255, 0.125));
 }
 
-.breaker-data {
+.data-row {
     padding: 0 $card-margin;
 }
 
 .rate-chart {
     margin-top: auto;
+    margin-bottom: -$card-margin / 2;
 }
 </style>
