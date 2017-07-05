@@ -8,7 +8,7 @@
                     <div class="breaker-data">
                         <span>{{ breaker.operationRate }} ops/sec</span>
                         <span style="float: right">
-                            <b>{{ breaker.rollingErrorPercentage }}%</b>
+                            <b>{{ breaker.rollingErrorPercentage }}% rate</b>
                             <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                         </span>
                     </div>
@@ -16,7 +16,7 @@
                         <span>{{ abbreviate(breaker.rollingOperationCount, 1) }} in last {{ prettyMs(breaker.metricRollingWindow) }}</span>
                         <span style="float: right">
                             <b>{{ prettyMs(breaker.rollingLatencyMean) }} avg</b>
-                            <i class="fa fa-clock-o" aria-hidden="true"></i>
+                            <i class="fa fa-clock-o" aria-hidden="true"></i>    
                         </span>
                     </div>
                     <div class="rate-chart">
