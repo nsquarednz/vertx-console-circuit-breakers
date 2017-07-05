@@ -42300,6 +42300,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             default: function _default(s) {
                 return s.split(' ');
             }
+        },
+        extraChartOptions: {
+            type: Object
         }
     },
     beforeCreate: function beforeCreate() {
@@ -42311,6 +42314,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.prevHidden = false;
 
         this.chartData = this.getDefaults(this.patternfly.c3ChartDefaults);
+        if (this.extraChartOptions) {
+            Object.assign(this.chartData, this.extraChartOptions);
+        }
         this.chartData.bindto = this.$el;
         if (this.width || this.height) {
             var size = {};

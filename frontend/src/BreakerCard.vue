@@ -1,12 +1,12 @@
 <template>
     <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-        <div class="card-pf card-pf-view card-pf-view-select card-pf-view-single-select breaker-card">
+        <div class="card-pf card-pf-view card-pf-view-select card-pf-view-single-select breaker-card" :class="statusCardClass">
             <div class="card-pf-body">
                 <h2 class="card-pf-title breaker-name">{{ breaker.name }}</h2>
                 <div class="breaker-state">{{ breaker.state.replace('_', ' ') }}</div>
                 <div class="breaker-info">
                     <div class="rate-chart">
-                        <pf-sparkline :tooltipContents="tooltipContents" :maxDisplayed="20" :data="operationRate"></pf-sparkline>
+                        <pf-sparkline :tooltipContents="tooltipContents" :maxDisplayed="20" :data="operationRate" :extraChartOptions="extraChartOptions"></pf-sparkline>
                     </div>
                 </div>
             </div>
@@ -23,10 +23,24 @@ export default {
     },
     created() {
         this.tooltipContents = { contents: d => '<span class="c3-tooltip-sparkline">' + abbreviate(d[0].value, 1) + ' Ops/sec</span>' }
+        this.extraChartOptions = {
+            color: {
+                pattern: ['#fff']
+            }
+        }
     },
     computed: {
         operationRate() {
             return { indices: [new Date()], values: [this.breaker.operationRate] };
+        },
+        statusCardClass() {
+            if (this.breaker.stateLevel === 0) {
+                return 'breaker-card-open';
+            } else if (this.breaker.stateLevel === 1) {
+                return 'breaker-card-half-open';
+            } else {
+                return null;
+            }
         }
     }
 }
@@ -38,6 +52,19 @@ $card-height: 150px;
 
 .breaker-card {
     padding: 0;
+    background-color: #3f9c35;
+    transition: background-color 2s;
+    color: #fff;
+    border-left: none;
+    border-right: none;
+}
+
+.breaker-card-open {
+    background-color: #c00;
+}
+
+.breaker-card-half-open {
+    background-color: #ec7a08;
 }
 
 .breaker-card .card-pf-body {
@@ -55,7 +82,7 @@ $card-height: 150px;
 .breaker-state {
     float: right;
     font-weight: bold;
-    margin-right: $card-margin;
+    margin: 0 $card-margin;
 }
 
 .breaker-name,
@@ -71,8 +98,8 @@ $card-height: 150px;
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
     flex-direction: column;
-    height: $card-height - $card-margin;
-    padding-bottom: 6px;
+    height: $card-height - $card-margin - 8px;
+    background-image: linear-gradient(transparent, rgba(255,255,255,0.125));
 }
 
 .rate-chart {

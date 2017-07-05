@@ -16,12 +16,12 @@
     position: absolute;
     z-index: -1;
     &>.card {
-        transition: all 0.3s;
+        transition: all 0.2s;
     }
 }
 
 .breaker-list-move {
-    transition: transform 0.3s ease-in-out;
+    transition: transform 0.2s ease-in-out;
 }
 </style>
 
