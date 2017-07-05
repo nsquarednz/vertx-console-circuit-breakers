@@ -4,15 +4,28 @@
             <div class="card-pf-body">
                 <h2 class="card-pf-title breaker-name">{{ breaker.name }}</h2>
                 <div class="breaker-state">{{ breaker.state.replace('_', ' ') }}</div>
+                <div>
+                    <pf-sparkline :tooltipContents="tooltipContents" :maxDisplayed="20" :data="operationRate"></pf-sparkline>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import abbreviate from 'number-abbreviate';
+
 export default {
     props: {
         breaker: Object
+    },
+    created() {
+        this.tooltipContents = { contents: d => '<span class="c3-tooltip-sparkline">' + abbreviate(d[0].value, 1) + ' Ops/sec</span>'}
+    },
+    computed: {
+        operationRate() {
+            return { indices: [new Date()], values: [this.breaker.operationRate] };
+        }
     }
 }
 </script>
@@ -32,8 +45,8 @@ export default {
     font-weight: bold;
 }
 
-.breaker-name, .breaker-state {
+.breaker-name,
+.breaker-state {
     display: inline-block;
 }
-
 </style>

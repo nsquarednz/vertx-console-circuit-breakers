@@ -82,13 +82,19 @@ export default {
         Promise.all([getAddress, openEventBus]).then(values => {
             this.eb.registerHandler(values[0].address, (e, m) => {
                 const breaker = m.body;
-                breaker.lastUpdated = Date.now();
+                breaker.lastUpdated = performance.now();
                 if (breaker.state === 'OPEN') {
                     breaker.stateLevel = 0;
                 } else if (breaker.state === 'HALF_OPEN') {
                     breaker.stateLevel = 1;
                 } else {
                     breaker.stateLevel = 2;
+                }
+                const previous = this.breakers[breaker.name];
+                if (previous) {
+                    breaker.operationRate = Math.round((breaker.totalOperationCount - previous.totalOperationCount) * 1000 / (breaker.lastUpdated - previous.lastUpdated));
+                } else {
+                    breaker.operationRate = 0;
                 }
                 this.$set(this.breakers, breaker.name, breaker);
             });

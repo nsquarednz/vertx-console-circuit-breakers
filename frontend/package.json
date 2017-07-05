@@ -9,6 +9,7 @@
     "build": "cross-env NODE_ENV=production webpack --progress"
   },
   "dependencies": {
+    "number-abbreviate": "^2.0.0",
     "vertx3-eventbus-client": "^3.4.2"
   },
   "devDependencies": {
