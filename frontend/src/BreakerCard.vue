@@ -2,23 +2,25 @@
     <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
         <div class="card-pf card-pf-view card-pf-view-select card-pf-view-single-select breaker-card" :class="statusCardClass">
             <div class="card-pf-body">
-                <div class="data-row">
-                    <h2 class="card-pf-title breaker-name">{{ breaker.name }}</h2>
-                    <div class="breaker-state">{{ breaker.state.replace('_', ' ') }}</div>
-                </div>
-                <div class="data-row">
-                    <span>{{ breaker.operationRate }} ops/sec</span>
-                    <span style="float: right">
-                        <b>{{ breaker.rollingErrorPercentage }}% rate</b>
-                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                    </span>
-                </div>
-                <div class="data-row">
-                    <span>{{ abbreviate(breaker.rollingOperationCount, 1) }} in last {{ prettyMs(breaker.metricRollingWindow) }}</span>
-                    <span style="float: right">
-                        <b>{{ prettyMs(breaker.rollingLatencyMean) }} avg</b>
-                        <i class="fa fa-clock-o" aria-hidden="true"></i>
-                    </span>
+                <div class="breaker-data">
+                    <div class="data-row">
+                        <h2 class="card-pf-title breaker-name">{{ breaker.name }}</h2>
+                        <div class="breaker-state">{{ breaker.state.replace('_', ' ') }}</div>
+                    </div>
+                    <div class="data-row">
+                        <span>{{ breaker.operationRate }} ops/sec</span>
+                        <span style="float: right">
+                            <b>{{ breaker.rollingErrorPercentage }}% rate</b>
+                            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <div class="data-row">
+                        <span>{{ abbreviate(breaker.rollingOperationCount, 1) }} in last {{ prettyMs(breaker.metricRollingWindow) }}</span>
+                        <span style="float: right">
+                            <b>{{ prettyMs(breaker.rollingLatencyMean) }} avg</b>
+                            <i class="fa fa-clock-o" aria-hidden="true"></i>
+                        </span>
+                    </div>
                 </div>
                 <div class="rate-chart">
                     <pf-sparkline :tooltipContents="tooltipContents" :maxDisplayed="20" :data="operationRate" :extraChartOptions="extraChartOptions"></pf-sparkline>
@@ -72,8 +74,7 @@ $card-height: 150px;
     background-color: #3f9c35;
     transition: background-color 2s;
     color: #fff;
-    border-left: none;
-    border-right: none;
+    border: none;
 }
 
 .breaker-card-open {
@@ -87,7 +88,7 @@ $card-height: 150px;
 .breaker-card .card-pf-body {
     height: $card-height;
     padding: 0;
-    margin-top: $card-margin;
+    margin-top: 0;
 }
 
 .breaker-name {
@@ -118,12 +119,20 @@ $card-height: 150px;
     background-image: linear-gradient(transparent, rgba(255, 255, 255, 0.125));
 }
 
+.breaker-data {
+    padding-top: $card-margin;
+    flex-grow: 1;
+
+    &:hover {
+        background: purple;
+    }
+}
+
 .data-row {
     padding: 0 $card-margin;
 }
 
 .rate-chart {
-    margin-top: auto;
     margin-bottom: -$card-margin / 2;
 }
 </style>
