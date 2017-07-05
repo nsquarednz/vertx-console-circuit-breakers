@@ -4,7 +4,7 @@
             <div class="card-pf-body">
                 <h2 class="card-pf-title breaker-name">{{ breaker.name }}</h2>
                 <div class="breaker-state">{{ breaker.state.replace('_', ' ') }}</div>
-                <div>
+                <div class="rate-chart">
                     <pf-sparkline :tooltipContents="tooltipContents" :maxDisplayed="20" :data="operationRate"></pf-sparkline>
                 </div>
             </div>
@@ -48,5 +48,11 @@ export default {
 .breaker-name,
 .breaker-state {
     display: inline-block;
+}
+
+.rate-chart {
+    position: absolute;
+    bottom: 0;
+    left: 0;
 }
 </style>
