@@ -1,6 +1,11 @@
 <style lang="scss" scoped>
-.pf-card-grid {
-    padding: 20px 30px 5px;
+.breaker-container {
+    &>.row {
+        padding: 0 10px;
+        &:first-child {
+            padding-top: 20px;
+        }
+    }
 }
 
 .breaker-list-enter-active,
@@ -23,10 +28,22 @@
 .breaker-list-move {
     transition: transform 0.2s ease-in-out;
 }
+
+.breaker-filter {
+    margin: 0 -10px 20px;
+}
 </style>
 
 <template>
-    <div class="container-fluid pf-card-grid">
+    <div class="container-fluid breaker-container">
+        <div class="row breaker-toolbar">
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="breaker-filter">
+                    <label for="filter" class="sr-only">Filter</label>
+                    <input type="text" id="filter" class="form-control" placeholder="Filter" v-model="filterQuery">
+                </div>
+            </div>
+        </div>
         <transition-group name="breaker-list" tag="div" class="row">
             <breaker-card v-for="breaker in sortedBreakers" :key="breaker.name" :breaker="breaker"></breaker-card>
         </transition-group>
@@ -44,7 +61,8 @@ export default {
     },
     data() {
         return {
-            breakers: {}
+            breakers: {},
+            filterQuery: ''
         }
     },
     computed: {
