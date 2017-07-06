@@ -46,7 +46,7 @@
                 </div>
             </div>
         </div>
-        <transition-group name="breaker-list" tag="div" class="row">
+        <transition-group :name="filtering ? null : 'breaker-list'" tag="div" class="row">
             <breaker-card v-for="breaker in sortedBreakers" :key="breaker.name" :breaker="breaker" v-show="isDisplayed(breaker.name)"></breaker-card>
         </transition-group>
     </div>
@@ -64,7 +64,8 @@ export default {
     data() {
         return {
             breakers: {},
-            filterQuery: ''
+            filterQuery: '',
+            filtering: false
         }
     },
     methods: {
@@ -101,6 +102,13 @@ export default {
         },
         processedFilterQuery() {
             return this.filterQuery.trim().toLowerCase();
+        }
+    },
+    watch: {
+        filterQuery() {
+            // Disable animations when filtering
+            this.filtering = true;
+            this.$nextTick(() => this.filtering = false);
         }
     },
     beforeMount() {
