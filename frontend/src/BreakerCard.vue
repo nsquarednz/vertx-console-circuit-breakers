@@ -109,12 +109,12 @@ export default {
     },
     methods: {
         onClick() {
-            console.log('clicked')
+            // console.log('clicked')
         }
     },
     computed: {
         operationRate() {
-            console.log(JSON.stringify(this.breaker));
+            // console.log(JSON.stringify(this.breaker));
             return { indices: [new Date()], values: [this.breaker.operationRate] };
         },
         statusCardClass() {
