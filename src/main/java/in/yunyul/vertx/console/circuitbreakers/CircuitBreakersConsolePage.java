@@ -23,6 +23,6 @@ public class CircuitBreakersConsolePage implements ConsolePage {
 
     @Override
     public String getLoaderFileName() {
-        return null;
+        return "/js/circuitbreakers.js";
     }
 }
