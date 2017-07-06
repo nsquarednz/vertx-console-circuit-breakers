@@ -1,5 +1,7 @@
 <style lang="scss" scoped>
 .breaker-container {
+    overflow-x: hidden;
+
     &>.row {
         padding: 0 10px;
         &:first-child {
@@ -45,7 +47,7 @@
             </div>
         </div>
         <transition-group name="breaker-list" tag="div" class="row">
-            <breaker-card v-for="breaker in sortedBreakers" :key="breaker.name" :breaker="breaker"></breaker-card>
+            <breaker-card v-for="breaker in sortedBreakers" :key="breaker.name" :breaker="breaker" v-show="isDisplayed(breaker.name)"></breaker-card>
         </transition-group>
     </div>
 </template>
@@ -63,6 +65,15 @@ export default {
         return {
             breakers: {},
             filterQuery: ''
+        }
+    },
+    methods: {
+        isDisplayed(name) {
+            if (this.processedFilterQuery === '') {
+                return true;
+            } else {
+                return name.toLowerCase().includes(this.processedFilterQuery);
+            }
         }
     },
     computed: {
@@ -87,6 +98,9 @@ export default {
                     }
                 });
             return sorted;
+        },
+        processedFilterQuery() {
+            return this.filterQuery.trim().toLowerCase();
         }
     },
     beforeMount() {
