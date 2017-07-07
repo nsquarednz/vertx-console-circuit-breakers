@@ -23,7 +23,7 @@
                     </div>
                 </div>
                 <div class="rate-chart" :class="{ 'below-overlay': displayOverlay}">
-                    <pf-sparkline :tooltipContents="tooltipContents" :maxDisplayed="20" :data="operationRate" :extraChartOptions="extraChartOptions"></pf-sparkline>
+                    <pf-sparkline :tooltipContents="tooltipContents" :maxDisplayed="15" :data="operationRate" :extraChartOptions="extraChartOptions"></pf-sparkline>
                 </div>
                 <div class="toggle-overlay" :class="{ shown: displayOverlay }" @mouseleave="displayOverlay = false" @click="onClick">
                     <div class="data-row">
@@ -160,7 +160,7 @@ $card-height: 150px;
 }
 
 .breaker-name {
-    font-size: 16px;
+    font-size: 15px;
     margin: 0;
 }
 
