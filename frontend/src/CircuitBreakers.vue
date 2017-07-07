@@ -101,26 +101,7 @@ export default {
         sortedBreakers() {
             const breakerValues = Object.keys(this.breakers)
                 .map(k => this.breakers[k]);
-            if (this.sortType === STATE_SORT) {
-                breakerValues.sort((a, b) => {
-                    const aLevel = a.stateLevel;
-                    const bLevel = b.stateLevel;
-                    if (aLevel === bLevel) {
-                        const aName = a.name.toUpperCase();
-                        const bName = b.name.toUpperCase();
-                        if (aName < bName) {
-                            return -1;
-                        } else if (aName > bName) {
-                            return 1;
-                        } else {
-                            return 0;
-                        }
-                    } else {
-                        return aLevel - bLevel;
-                    }
-                });
-            } else if (this.sortType === NAME_SORT) {
-                breakerValues.sort((a, b) => {
+            const nameComparator = (a, b) => {
                     const aName = a.name.toUpperCase();
                     const bName = b.name.toUpperCase();
                     if (aName < bName) {
@@ -130,7 +111,20 @@ export default {
                     } else {
                         return 0;
                     }
+                };
+
+            if (this.sortType === STATE_SORT) {
+                breakerValues.sort((a, b) => {
+                    const aLevel = a.stateLevel;
+                    const bLevel = b.stateLevel;
+                    if (aLevel === bLevel) {
+                        return nameComparator(a, b);
+                    } else {
+                        return aLevel - bLevel;
+                    }
                 });
+            } else if (this.sortType === NAME_SORT) {
+                breakerValues.sort(nameComparator);
             } else if (this.sortType === CALL_SORT) {
                 breakerValues.sort((a, b) => b.rollingOperationCount - a.rollingOperationCount);
             } else {
