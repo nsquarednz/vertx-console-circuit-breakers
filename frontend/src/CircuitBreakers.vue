@@ -132,29 +132,9 @@ export default {
                     }
                 });
             } else if (this.sortType === CALL_SORT) {
-                breakerValues.sort((a, b) => {
-                    const aCount = a.rollingOperationCount;
-                    const bCount = b.rollingOperationCount;
-                    if (aCount > bCount) {
-                        return -1;
-                    } else if (aCount < bCount) {
-                        return 1;
-                    } else {
-                        return 0;
-                    }
-                });
+                breakerValues.sort((a, b) => b.rollingOperationCount - a.rollingOperationCount);
             } else {
-                breakerValues.sort((a, b) => {
-                    const aCount = a.operationRate;
-                    const bCount = b.operationRate;
-                    if (aCount > bCount) {
-                        return -1;
-                    } else if (aCount < bCount) {
-                        return 1;
-                    } else {
-                        return 0;
-                    }
-                });
+                breakerValues.sort((a, b) => b.operationRate - a.operationRate);
             }
             return breakerValues;
         },
