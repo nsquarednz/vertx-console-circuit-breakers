@@ -102,16 +102,16 @@ export default {
             const breakerValues = Object.keys(this.breakers)
                 .map(k => this.breakers[k]);
             const nameComparator = (a, b) => {
-                    const aName = a.name.toUpperCase();
-                    const bName = b.name.toUpperCase();
-                    if (aName < bName) {
-                        return -1;
-                    } else if (aName > bName) {
-                        return 1;
-                    } else {
-                        return 0;
-                    }
-                };
+                const aName = a.name.toUpperCase();
+                const bName = b.name.toUpperCase();
+                if (aName < bName) {
+                    return -1;
+                } else if (aName > bName) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            };
 
             if (this.sortType === STATE_SORT) {
                 breakerValues.sort((a, b) => {
@@ -138,9 +138,11 @@ export default {
     },
     watch: {
         filterQuery() {
-            // Disable animations when filtering
-            this.filtering = true;
-            this.$nextTick(() => this.filtering = false);
+            if (!this.filtering) {
+                // Disable animations when filtering
+                this.filtering = true;
+                this.$nextTick(() => this.filtering = false);
+            }
         }
     },
     beforeMount() {
