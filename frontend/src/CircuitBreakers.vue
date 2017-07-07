@@ -31,8 +31,17 @@
     transition: transform 0.2s ease-in-out;
 }
 
-.breaker-filter {
+.breaker-filter,
+.breaker-sort {
     margin: 0 -10px 20px;
+}
+
+.breaker-sort {
+    float: right;
+
+    .btn-group.bootstrap-select {
+        width: 120px;
+    }
 }
 </style>
 
@@ -43,6 +52,11 @@
                 <div class="breaker-filter">
                     <label for="filter" class="sr-only">Filter</label>
                     <input type="text" id="filter" class="form-control" placeholder="Filter" v-model="filterQuery">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-offset-3 col-sm-3 col-md-offset-6 col-md-2 col-lg-offset-7 col-lg-2">
+                <div class="breaker-sort">
+                    <v-select v-model="sortType" :options="sortOptions"></v-select>
                 </div>
             </div>
         </div>
@@ -56,6 +70,11 @@
 import EventBus from 'vertx3-eventbus-client';
 import BreakerCard from './BreakerCard.vue';
 
+const STATE_SORT = 'Sort by State';
+const NAME_SORT = 'Sort by Name';
+const CALL_SORT = 'Sort by Calls';
+const RATE_SORT = 'Sort by Rate';
+
 export default {
     name: 'Circuit Breakers',
     components: {
@@ -65,7 +84,8 @@ export default {
         return {
             breakers: {},
             filterQuery: '',
-            filtering: false
+            filtering: false,
+            sortType: STATE_SORT
         }
     },
     methods: {
@@ -79,9 +99,10 @@ export default {
     },
     computed: {
         sortedBreakers() {
-            const sorted = Object.keys(this.breakers)
-                .map(k => this.breakers[k])
-                .sort((a, b) => {
+            const breakerValues = Object.keys(this.breakers)
+                .map(k => this.breakers[k]);
+            if (this.sortType === STATE_SORT) {
+                breakerValues.sort((a, b) => {
                     const aLevel = a.stateLevel;
                     const bLevel = b.stateLevel;
                     if (aLevel === bLevel) {
@@ -98,7 +119,44 @@ export default {
                         return aLevel - bLevel;
                     }
                 });
-            return sorted;
+            } else if (this.sortType === NAME_SORT) {
+                breakerValues.sort((a, b) => {
+                    const aName = a.name.toUpperCase();
+                    const bName = b.name.toUpperCase();
+                    if (aName < bName) {
+                        return -1;
+                    } else if (aName > bName) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
+            } else if (this.sortType === CALL_SORT) {
+                breakerValues.sort((a, b) => {
+                    const aCount = a.rollingOperationCount;
+                    const bCount = b.rollingOperationCount;
+                    if (aCount > bCount) {
+                        return -1;
+                    } else if (aCount < bCount) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
+            } else {
+                breakerValues.sort((a, b) => {
+                    const aCount = a.operationRate;
+                    const bCount = b.operationRate;
+                    if (aCount > bCount) {
+                        return -1;
+                    } else if (aCount < bCount) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
+            }
+            return breakerValues;
         },
         processedFilterQuery() {
             return this.filterQuery.trim().toLowerCase();
@@ -139,6 +197,8 @@ export default {
                 this.$set(this.breakers, breaker.name, breaker);
             });
         });
+
+        this.sortOptions = [STATE_SORT, NAME_SORT, CALL_SORT, RATE_SORT];
     },
     beforeDestroy() {
         this.eb.close();

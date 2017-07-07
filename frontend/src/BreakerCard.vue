@@ -8,14 +8,14 @@
                         <div class="breaker-state">{{ breaker.state.replace('_', ' ') }}</div>
                     </div>
                     <div class="data-row">
-                        <span>{{ abbreviate(breaker.operationRate, 1) }} ops/sec</span>
+                        <span>{{ abbreviate(breaker.operationRate, 1) }} {{ plural('op', breaker.operationRate) }}/sec</span>
                         <span style="float: right">
                             <b>{{ breaker.rollingErrorPercentage }}% rate</b>
                             <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                         </span>
                     </div>
                     <div class="data-row">
-                        <span>{{ abbreviate(breaker.rollingOperationCount, 1) }} in last {{ prettyMs(breaker.metricRollingWindow) }}</span>
+                        <span>{{ abbreviate(breaker.rollingOperationCount, 1) }} {{ plural('call', breaker.rollingOperationCount) }} in last {{ prettyMs(breaker.metricRollingWindow) }}</span>
                         <span style="float: right">
                             <b>{{ prettyMs(breaker.rollingLatencyMean) }} avg</b>
                             <i class="fa fa-clock-o" aria-hidden="true"></i>
@@ -110,6 +110,9 @@ export default {
     methods: {
         onClick() {
             // console.log('clicked')
+        },
+        plural(noun, amount) {
+            return amount === 1 ? noun : noun + 's';
         }
     },
     computed: {
