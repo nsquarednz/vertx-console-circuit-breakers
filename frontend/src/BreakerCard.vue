@@ -33,48 +33,48 @@
                     <table class="details-table" style="display: inline-block;">
                         <tbody>
                             <tr>
-                                <td>Successes</td>
-                                <td>{{ abbreviate(breaker.rollingSuccessCount, 1) }}</td>
+                                <td class="cell-k">Successes</td>
+                                <td class="cell-v">{{ abbreviate(breaker.rollingSuccessCount, 1) }}</td>
                             </tr>
                             <tr>
-                                <td>Failures</td>
-                                <td>{{ abbreviate(breaker.rollingFailureCount, 1) }}</td>
+                                <td class="cell-k">Failures</td>
+                                <td class="cell-v">{{ abbreviate(breaker.rollingFailureCount, 1) }}</td>
                             </tr>
                             <tr>
-                                <td>Exceptions</td>
-                                <td>{{ abbreviate(breaker.rollingExceptionCount, 1) }}</td>
+                                <td class="cell-k">Exceptions</td>
+                                <td class="cell-v">{{ abbreviate(breaker.rollingExceptionCount, 1) }}</td>
                             </tr>
                             <tr>
-                                <td>Timeouts</td>
-                                <td>{{ abbreviate(breaker.rollingTimeoutCount, 1) }}</td>
+                                <td class="cell-k">Timeouts</td>
+                                <td class="cell-v">{{ abbreviate(breaker.rollingTimeoutCount, 1) }}</td>
                             </tr>
                             <tr>
-                                <td>Rejections</td>
-                                <td>{{ abbreviate(breaker.rollingShortCircuitedCount, 1) }}</td>
+                                <td class="cell-k">Rejections</td>
+                                <td class="cell-v">{{ abbreviate(breaker.rollingShortCircuitedCount, 1) }}</td>
                             </tr>
                         </tbody>
                     </table>
                     <table class="details-table" style="float: right">
                         <tbody>
                             <tr>
-                                <td>Median</td>
-                                <td>{{ prettyMs(breaker.rollingLatency['50']) }}</td>
+                                <td class="cell-k">Median</td>
+                                <td class="cell-v">{{ prettyMs(breaker.rollingLatency['50']) }}</td>
                             </tr>
                             <tr>
-                                <td>Max</td>
-                                <td>{{ prettyMs(breaker.rollingLatency['100']) }}</td>
+                                <td class="cell-k">Max</td>
+                                <td class="cell-v">{{ prettyMs(breaker.rollingLatency['100']) }}</td>
                             </tr>
                             <tr>
-                                <td>90th</td>
-                                <td>{{ prettyMs(breaker.rollingLatency['90']) }}</td>
+                                <td class="cell-k">90th</td>
+                                <td class="cell-v">{{ prettyMs(breaker.rollingLatency['90']) }}</td>
                             </tr>
                             <tr>
-                                <td>95th</td>
-                                <td>{{ prettyMs(breaker.rollingLatency['95']) }}</td>
+                                <td class="cell-k">95th</td>
+                                <td class="cell-v">{{ prettyMs(breaker.rollingLatency['95']) }}</td>
                             </tr>
                             <tr>
-                                <td>99th</td>
-                                <td>{{ prettyMs(breaker.rollingLatency['99']) }}</td>
+                                <td class="cell-k">99th</td>
+                                <td class="cell-v">{{ prettyMs(breaker.rollingLatency['99']) }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -230,13 +230,13 @@ $card-height: 150px;
 .details-table {
     margin-top: 2px;
 
-    td:first-child {
+    .cell-k {
         font-weight: bold;
         padding-right: 6px;
         border-right: 1px solid rgba(255, 255, 255, 0.2);
     }
 
-    td:last-child {
+    .cell-v {
         padding-left: 6px;
     }
 }
