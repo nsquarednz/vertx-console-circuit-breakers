@@ -147,7 +147,7 @@ export default {
     },
     beforeMount() {
         const getAddress = this.$http.get(window.location.pathname + '/circuitbreakers/address')
-            .then(response => response.json());
+            .then(response => response.data);
         const openEventBus = new Promise((resolve, reject) => {
             this.eb = new EventBus(window.location.pathname + '/circuitbreakerproxy');
             this.eb.onopen = () => resolve(true);
