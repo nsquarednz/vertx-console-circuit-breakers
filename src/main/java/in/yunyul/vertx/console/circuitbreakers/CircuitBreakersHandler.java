@@ -14,7 +14,7 @@ public class CircuitBreakersHandler {
     private static final String JSON_CONTENT_TYPE = "application/json";
     private Map<String, JsonObject> lastReceived = new HashMap<>();
 
-    public CircuitBreakersHandler(Vertx vertx, Router router, String basePath, String circuitBreakerAddress) {
+    CircuitBreakersHandler(Vertx vertx, Router router, String basePath, String circuitBreakerAddress) {
         // Set up streaming
         SockJSHandler sockJSHandler = SockJSHandler.create(vertx);
         // Allow circuit breaker broadcasts
