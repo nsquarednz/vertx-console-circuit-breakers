@@ -8,15 +8,27 @@ import io.vertx.ext.web.Router;
 public class CircuitBreakersConsolePage implements ConsolePage {
     private final String circuitBreakerAddress;
 
+    /**
+     * Creates the circuit breakers console page
+     *
+     * @return the console page
+     */
     public static CircuitBreakersConsolePage create() {
         return new CircuitBreakersConsolePage("vertx.circuit-breaker");
     }
 
+    /**
+     * Creates the circuit breakers console page, listening on the specified address
+     * the event bus address to listen for changes on
+     *
+     * @param circuitBreakerAddress
+     * @return
+     */
     public static CircuitBreakersConsolePage create(String circuitBreakerAddress) {
         return new CircuitBreakersConsolePage(circuitBreakerAddress);
     }
 
-    public CircuitBreakersConsolePage(String circuitBreakerAddress) {
+    private CircuitBreakersConsolePage(String circuitBreakerAddress) {
         this.circuitBreakerAddress = circuitBreakerAddress;
     }
 
