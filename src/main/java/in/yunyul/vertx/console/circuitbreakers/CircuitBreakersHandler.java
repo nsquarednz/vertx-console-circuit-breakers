@@ -10,7 +10,7 @@ import io.vertx.ext.web.handler.sockjs.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CircuitBreakersHandler {
+class CircuitBreakersHandler {
     private static final String JSON_CONTENT_TYPE = "application/json";
     private Map<String, JsonObject> lastReceived = new HashMap<>();
 
